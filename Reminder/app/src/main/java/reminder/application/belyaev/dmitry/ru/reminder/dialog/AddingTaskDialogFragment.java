@@ -9,6 +9,7 @@ import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
@@ -16,9 +17,12 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -61,6 +65,8 @@ public class AddingTaskDialogFragment extends DialogFragment {
 		final TextInputLayout tilTitle = (TextInputLayout) container.findViewById( R.id.tilDialogTaskTitle );
 		final EditText etTitle = tilTitle.getEditText();
 
+		Spinner spPriority = (Spinner) container.findViewById( R.id.spDialogTaskPriority );
+
 		TextInputLayout tilDate = (TextInputLayout) container.findViewById( R.id.tilDialogTaskDate );
 		etDate = tilDate.getEditText();
 
@@ -74,6 +80,23 @@ public class AddingTaskDialogFragment extends DialogFragment {
 		builder.setView( container );
 
 		final ModelTask task = new ModelTask();
+
+
+		ArrayAdapter<String> priorityAdapter = new ArrayAdapter<String>( getActivity(), android.R.layout.simple_spinner_dropdown_item,
+			ModelTask.PRIORITY_LEVELS);
+		spPriority.setAdapter( priorityAdapter );
+		spPriority.setOnItemSelectedListener( new AdapterView.OnItemSelectedListener() {
+			@Override public void onItemSelected( AdapterView<?> adapterView, View view, int position, long l )
+			{
+				task.setPriority( position );
+			}
+
+			@Override public void onNothingSelected( AdapterView<?> adapterView )
+			{
+
+			}
+		} );
+
 		calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR_OF_DAY, calendar.get( Calendar.HOUR_OF_DAY ) + 1);
 

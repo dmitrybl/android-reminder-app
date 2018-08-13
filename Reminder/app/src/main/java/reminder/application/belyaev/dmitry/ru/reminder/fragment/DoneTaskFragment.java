@@ -2,13 +2,18 @@ package reminder.application.belyaev.dmitry.ru.reminder.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import reminder.application.belyaev.dmitry.ru.reminder.R;
 
-public class DoneTaskFragment extends Fragment {
+public class DoneTaskFragment extends TaskFragment {
+
+	RecyclerView recyclerView;
+	RecyclerView.LayoutManager layoutManager;
 
 	public DoneTaskFragment()
 	{
@@ -20,6 +25,10 @@ public class DoneTaskFragment extends Fragment {
 		Bundle savedInstanceState )
 	{
 		// Inflate the layout for this fragment
-		return inflater.inflate( R.layout.fragment_done_task, container, false );
+		View rootView = inflater.inflate( R.layout.fragment_done_task, container, false );
+		recyclerView = (RecyclerView) rootView.findViewById( R.id.rvDoneTasks );
+		layoutManager = new LinearLayoutManager( getActivity() );
+		recyclerView.setLayoutManager( layoutManager );
+		return rootView;
 	}
 }
