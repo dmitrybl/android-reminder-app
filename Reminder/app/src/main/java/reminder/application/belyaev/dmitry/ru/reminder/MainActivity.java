@@ -1,6 +1,8 @@
 package reminder.application.belyaev.dmitry.ru.reminder;
 
+import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +10,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Toast;
 
 import reminder.application.belyaev.dmitry.ru.reminder.adapter.TabAdapter;
+import reminder.application.belyaev.dmitry.ru.reminder.dialog.AddingTaskDialogFragment;
 import reminder.application.belyaev.dmitry.ru.reminder.fragment.SplashFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AddingTaskDialogFragment.AddingTaskListener{
 
 	FragmentManager fragmentManager;
 	PreferenceHelper preferenceHelper;
@@ -25,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 		preferenceHelper = PreferenceHelper.getInstance();
 
 		fragmentManager = getFragmentManager();
-		runSplash();
+		//runSplash();
 		setUI();
 	}
 
@@ -71,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
 			{
 
 			}
+
+		} );
+
+		FloatingActionButton fab = (FloatingActionButton) findViewById( R.id.fab );
+		fab.setOnClickListener( new View.OnClickListener() {
+			@Override public void onClick( View view )
+			{
+				DialogFragment addingTaskDialogFragment = new AddingTaskDialogFragment();
+				addingTaskDialogFragment.show(fragmentManager, "AddingTaskDialogFragment");
+			}
 		} );
 	}
 
@@ -91,5 +106,13 @@ public class MainActivity extends AppCompatActivity {
 			preferenceHelper.putBoolean( PreferenceHelper.SPLASH_IS_INVISIBLE, item.isChecked() );
 		}
 		return super.onOptionsItemSelected( item );
+	}
+
+	@Override public void onTaskAdded() {
+		Toast.makeText( this, "Task added.", Toast.LENGTH_SHORT ).show();
+	}
+
+	@Override public void onTaskAddingCancel() {
+		Toast.makeText( this, "Task adding cancel", Toast.LENGTH_SHORT ).show();
 	}
 }

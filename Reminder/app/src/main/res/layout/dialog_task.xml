@@ -10,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/tillDialogTaskTitle"
+            android:id="@+id/tilDialogTaskTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
@@ -23,13 +23,13 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/tillDialogTaskDate"
+            android:id="@+id/tilDialogTaskDate"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            android:layout_below="@id/tillDialogTaskTitle">
+            android:layout_below="@id/tilDialogTaskTitle">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,8 +42,8 @@
         <android.support.design.widget.TextInputLayout
             android:id="@+id/tillDialogTaskTime"
             android:layout_width="130dp"
-            android:layout_below="@id/tillDialogTaskTitle"
-            android:layout_alignRight="@id/tillDialogTaskTitle"
+            android:layout_below="@id/tilDialogTaskTitle"
+            android:layout_alignRight="@id/tilDialogTaskTitle"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"

@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    lintOptions {
+        abortOnError false
+        checkReleaseBuilds false
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "reminder.application.belyaev.dmitry.ru.reminder"
