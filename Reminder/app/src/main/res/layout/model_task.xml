@@ -16,7 +16,6 @@
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/tvTaskDate"
         android:layout_alignParentRight="true"
-        android:text="Title"
         android:layout_toLeftOf="@id/tvTaskDate"
         android:layout_toStartOf="@id/tvTaskDate"/>
 
@@ -27,7 +26,6 @@
         android:gravity="right"
         android:textSize="14sp"
         android:textColor="@color/secondary_text_default_material_light"
-        android:text="Date"
         android:layout_alignParentRight="true"
         android:layout_margin="19dp"/>
 

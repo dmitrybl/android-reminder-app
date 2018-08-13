@@ -25,15 +25,17 @@ import java.util.Calendar;
 
 import reminder.application.belyaev.dmitry.ru.reminder.R;
 import reminder.application.belyaev.dmitry.ru.reminder.Utils;
+import reminder.application.belyaev.dmitry.ru.reminder.model.ModelTask;
 
 public class AddingTaskDialogFragment extends DialogFragment {
 
 	private AddingTaskListener addingTaskListener;
 	private static EditText etDate;
 	private static EditText etTime;
+	private static Calendar calendar;
 
 	public interface AddingTaskListener {
-		void onTaskAdded();
+		void onTaskAdded(ModelTask newTask);
 		void onTaskAddingCancel();
 	}
 
@@ -71,13 +73,16 @@ public class AddingTaskDialogFragment extends DialogFragment {
 
 		builder.setView( container );
 
+		final ModelTask task = new ModelTask();
+		calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR_OF_DAY, calendar.get( Calendar.HOUR_OF_DAY ) + 1);
+
 		etDate.setOnClickListener( new View.OnClickListener() {
 			@Override
 			public void onClick( View view ) {
 				if(etDate.length() == 0) {
 					etDate.setText("");
 				}
-
 				DialogFragment datePickerFragment = new DatePickerFragment();
 				datePickerFragment.show(getFragmentManager(), "DatePickerFragment");
 			}
@@ -98,7 +103,11 @@ public class AddingTaskDialogFragment extends DialogFragment {
 		builder.setPositiveButton( R.string.dialog_ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick( DialogInterface dialog, int i ) {
-				addingTaskListener.onTaskAdded();
+				task.setTitle( etTitle.getText().toString() );
+				if(etDate.length() != 0 || etTime.length() != 0) {
+					task.setDate( calendar.getTimeInMillis() );
+				}
+				addingTaskListener.onTaskAdded(task);
 				dialog.dismiss();
 			}
 		});
@@ -162,9 +171,10 @@ public class AddingTaskDialogFragment extends DialogFragment {
 
 		@Override
 		public void onDateSet( DatePicker datePicker, int year, int monthOfYear, int dayOfMonth ) {
-			Calendar dateCalendar = Calendar.getInstance();
-			dateCalendar.set(year, monthOfYear, dayOfMonth);
-			etDate.setText( Utils.getDate( dateCalendar.getTimeInMillis() ));
+			calendar.set(Calendar.YEAR, year);
+			calendar.set(Calendar.MONTH, monthOfYear);
+			calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+			etDate.setText( Utils.getDate( calendar.getTimeInMillis() ));
 		}
 	}
 
@@ -180,9 +190,10 @@ public class AddingTaskDialogFragment extends DialogFragment {
 		}
 
 		@Override public void onTimeSet( TimePicker timePicker, int hourOfDay, int minute ) {
-			Calendar timeCalendar = Calendar.getInstance();
-			timeCalendar.set(0, 0, 0, hourOfDay, minute);
-			etTime.setText( Utils.getTime( timeCalendar.getTimeInMillis() ));
+			calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+			calendar.set(Calendar.MINUTE, minute);
+			calendar.set(Calendar.SECOND, 0);
+			etTime.setText( Utils.getTime( calendar.getTimeInMillis() ));
 		}
 	}
 }

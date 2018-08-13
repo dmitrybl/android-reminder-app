@@ -15,12 +15,20 @@ import android.widget.Toast;
 
 import reminder.application.belyaev.dmitry.ru.reminder.adapter.TabAdapter;
 import reminder.application.belyaev.dmitry.ru.reminder.dialog.AddingTaskDialogFragment;
+import reminder.application.belyaev.dmitry.ru.reminder.fragment.CurrentTaskFragment;
+import reminder.application.belyaev.dmitry.ru.reminder.fragment.DoneTaskFragment;
 import reminder.application.belyaev.dmitry.ru.reminder.fragment.SplashFragment;
+import reminder.application.belyaev.dmitry.ru.reminder.model.ModelTask;
 
 public class MainActivity extends AppCompatActivity implements AddingTaskDialogFragment.AddingTaskListener{
 
 	FragmentManager fragmentManager;
 	PreferenceHelper preferenceHelper;
+
+	TabAdapter tabAdapter;
+
+	CurrentTaskFragment currentTaskFragment;
+	DoneTaskFragment doneTaskFragment;
 
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
@@ -57,8 +65,8 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 		tabLayout.addTab( tabLayout.newTab().setText(R.string.done_task) );
 
 		final ViewPager viewPager = findViewById( R.id.pager );
-		TabAdapter adapter = new TabAdapter( fragmentManager, 2 );
-		viewPager.setAdapter( adapter );
+		tabAdapter = new TabAdapter( fragmentManager, 2 );
+		viewPager.setAdapter( tabAdapter );
 		viewPager.addOnPageChangeListener( new TabLayout.TabLayoutOnPageChangeListener( tabLayout ) );
 		tabLayout.setOnTabSelectedListener( new TabLayout.OnTabSelectedListener() {
 
@@ -78,6 +86,9 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 			}
 
 		} );
+
+		currentTaskFragment = (CurrentTaskFragment) tabAdapter.getItem( TabAdapter.CURRENT_TASK_FRAGMENT_POSITION );
+		doneTaskFragment = (DoneTaskFragment) tabAdapter.getItem( TabAdapter.DONE_TASK_FRAGMENT_POSITION );
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById( R.id.fab );
 		fab.setOnClickListener( new View.OnClickListener() {
@@ -108,8 +119,8 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 		return super.onOptionsItemSelected( item );
 	}
 
-	@Override public void onTaskAdded() {
-		Toast.makeText( this, "Task added.", Toast.LENGTH_SHORT ).show();
+	@Override public void onTaskAdded(ModelTask newTask) {
+		currentTaskFragment.addTask( newTask );
 	}
 
 	@Override public void onTaskAddingCancel() {
