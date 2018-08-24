@@ -11,8 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import reminder.application.belyaev.dmitry.ru.reminder.R;
 import reminder.application.belyaev.dmitry.ru.reminder.adapter.CurrentTasksAdapter;
+import reminder.application.belyaev.dmitry.ru.reminder.database.DBHelper;
 import reminder.application.belyaev.dmitry.ru.reminder.model.ModelTask;
 
 public class CurrentTaskFragment extends TaskFragment {
@@ -53,6 +57,17 @@ public class CurrentTaskFragment extends TaskFragment {
 		adapter = new CurrentTasksAdapter(this);
 		recyclerView.setAdapter( adapter );
 		return rootView;
+	}
+
+	@Override public void addTaskFromDB()
+	{
+		List<ModelTask> tasks = new ArrayList<>(  );
+		tasks.addAll( activity.dbHelper.query().getTasks( DBHelper.SELECTION_STATUS + " OR " +
+		DBHelper.SELECTION_STATUS, new String[]{Integer.toString( ModelTask.STATUS_CURRENT ),
+		Integer.toString( ModelTask.STATUS_OVERDUE )}, DBHelper.TASK_DATE_COLUMN));
+		for(int i = 0; i < tasks.size(); i++) {
+			addTask( tasks.get( i ), false );
+		}
 	}
 
 	@Override public void moveTask( ModelTask task )

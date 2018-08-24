@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import reminder.application.belyaev.dmitry.ru.reminder.adapter.TabAdapter;
+import reminder.application.belyaev.dmitry.ru.reminder.database.DBHelper;
 import reminder.application.belyaev.dmitry.ru.reminder.dialog.AddingTaskDialogFragment;
 import reminder.application.belyaev.dmitry.ru.reminder.fragment.CurrentTaskFragment;
 import reminder.application.belyaev.dmitry.ru.reminder.fragment.DoneTaskFragment;
@@ -32,15 +33,17 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 	TaskFragment currentTaskFragment;
 	TaskFragment doneTaskFragment;
 
+	public DBHelper dbHelper;
+
 	@Override
 	protected void onCreate( Bundle savedInstanceState ) {
 		super.onCreate( savedInstanceState );
 		setContentView( R.layout.main );
 		PreferenceHelper.getInstance().init( getApplicationContext() );
 		preferenceHelper = PreferenceHelper.getInstance();
-
+		dbHelper = new DBHelper( getApplicationContext() );
 		fragmentManager = getFragmentManager();
-		//runSplash();
+
 		setUI();
 	}
 
@@ -122,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 	}
 
 	@Override public void onTaskAdded(ModelTask newTask) {
-		currentTaskFragment.addTask( newTask );
+		currentTaskFragment.addTask( newTask, true );
 	}
 
 	@Override public void onTaskAddingCancel() {
@@ -131,11 +134,11 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 
 	@Override public void onTaskDone( ModelTask task )
 	{
-		doneTaskFragment.addTask( task );
+		doneTaskFragment.addTask( task, false );
 	}
 
 	@Override public void onTaskRestore( ModelTask task )
 	{
-		currentTaskFragment.addTask( task );
+		currentTaskFragment.addTask( task, false );
 	}
 }
