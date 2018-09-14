@@ -3,8 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:clickable="true"
-    android:background="?android:attr/selectableItemBackground">
+    android:clickable="true">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:layout_width="match_parent"
@@ -36,5 +40,7 @@
         android:src="@color/colorPrimary"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>
