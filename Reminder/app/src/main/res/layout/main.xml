@@ -28,6 +28,16 @@
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways">
+
+
+            <android.support.v7.widget.SearchView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/search_view"
+                android:layout_gravity="right"
+                app:theme="@style/Theme.AppCompat.NoActionBar"
+                app:searchIcon="@drawable/baseline_search_white_24"/>
+
         </android.support.v7.widget.Toolbar>
         
         <android.support.design.widget.TabLayout

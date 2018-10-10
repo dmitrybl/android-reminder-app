@@ -32,7 +32,8 @@ public class CurrentTaskFragment extends TaskFragment {
 
 	OnTaskDoneListener onTaskDoneListener;
 
-	@Override public void onAttach( Activity activity )
+	@Override
+	public void onAttach( Activity activity )
 	{
 		super.onAttach( activity );
 		try {
@@ -59,8 +60,22 @@ public class CurrentTaskFragment extends TaskFragment {
 		return rootView;
 	}
 
+	@Override
+	public void findTasks(String title) {
+		adapter.removeAllItems();
+		List<ModelTask> tasks = new ArrayList<>(  );
+		tasks.addAll( activity.dbHelper.query().getTasks( DBHelper.SELECTION_LIKE_TITLE + " AND " +
+				DBHelper.SELECTION_STATUS + " OR " +
+				DBHelper.SELECTION_STATUS, new String[]{"%" + title + "%", Integer.toString( ModelTask.STATUS_CURRENT ),
+				Integer.toString( ModelTask.STATUS_OVERDUE )}, DBHelper.TASK_DATE_COLUMN));
+		for(int i = 0; i < tasks.size(); i++) {
+			addTask( tasks.get( i ), false );
+		}
+	}
+
 	@Override public void addTaskFromDB()
 	{
+		adapter.removeAllItems();
 		List<ModelTask> tasks = new ArrayList<>(  );
 		tasks.addAll( activity.dbHelper.query().getTasks( DBHelper.SELECTION_STATUS + " OR " +
 		DBHelper.SELECTION_STATUS, new String[]{Integer.toString( ModelTask.STATUS_CURRENT ),

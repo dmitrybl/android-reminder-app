@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import reminder.application.belyaev.dmitry.ru.reminder.adapter.TabAdapter;
@@ -27,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 
 	FragmentManager fragmentManager;
 	PreferenceHelper preferenceHelper;
+
+	SearchView searchView;
 
 	TabAdapter tabAdapter;
 
@@ -94,6 +97,21 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 
 		currentTaskFragment = (CurrentTaskFragment) tabAdapter.getItem( TabAdapter.CURRENT_TASK_FRAGMENT_POSITION );
 		doneTaskFragment = (DoneTaskFragment) tabAdapter.getItem( TabAdapter.DONE_TASK_FRAGMENT_POSITION );
+
+		searchView = findViewById(R.id.search_view);
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String s) {
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				currentTaskFragment.findTasks(newText);
+				doneTaskFragment.findTasks(newText);
+				return false;
+			}
+		});
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById( R.id.fab );
 		fab.setOnClickListener( new View.OnClickListener() {
