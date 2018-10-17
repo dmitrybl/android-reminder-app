@@ -14,6 +14,7 @@ import reminder.application.belyaev.dmitry.ru.reminder.MainActivity;
 import reminder.application.belyaev.dmitry.ru.reminder.R;
 import reminder.application.belyaev.dmitry.ru.reminder.adapter.CurrentTasksAdapter;
 import reminder.application.belyaev.dmitry.ru.reminder.adapter.TaskAdapter;
+import reminder.application.belyaev.dmitry.ru.reminder.alarm.AlarmHelper;
 import reminder.application.belyaev.dmitry.ru.reminder.model.Item;
 import reminder.application.belyaev.dmitry.ru.reminder.model.ModelTask;
 
@@ -25,12 +26,16 @@ public abstract class TaskFragment extends Fragment {
 
 	public MainActivity activity;
 
+	public AlarmHelper alarmHelper;
+
 	@Override public void onActivityCreated( @Nullable Bundle savedInstanceState )
 	{
 		super.onActivityCreated( savedInstanceState );
 		if( getActivity() != null ) {
 			activity = (MainActivity) getActivity();
 		}
+
+		alarmHelper = AlarmHelper.getInstance();
 		addTaskFromDB();
 	}
 
@@ -94,6 +99,7 @@ public abstract class TaskFragment extends Fragment {
 						@Override public void onViewDetachedFromWindow( View view )
 						{
 							if(isRemoved[0]) {
+								alarmHelper.removeAlarm(timeStamp);
 								activity.dbHelper.removeTask( timeStamp );
 							}
 						}

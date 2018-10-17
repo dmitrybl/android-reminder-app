@@ -15,6 +15,7 @@ import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import reminder.application.belyaev.dmitry.ru.reminder.adapter.TabAdapter;
+import reminder.application.belyaev.dmitry.ru.reminder.alarm.AlarmHelper;
 import reminder.application.belyaev.dmitry.ru.reminder.database.DBHelper;
 import reminder.application.belyaev.dmitry.ru.reminder.dialog.AddingTaskDialogFragment;
 import reminder.application.belyaev.dmitry.ru.reminder.fragment.CurrentTaskFragment;
@@ -44,6 +45,9 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 		setContentView( R.layout.main );
 		PreferenceHelper.getInstance().init( getApplicationContext() );
 		preferenceHelper = PreferenceHelper.getInstance();
+
+		AlarmHelper.getInstance().init(getApplicationContext());
+
 		dbHelper = new DBHelper( getApplicationContext() );
 		fragmentManager = getFragmentManager();
 
@@ -129,6 +133,18 @@ public class MainActivity extends AppCompatActivity implements AddingTaskDialogF
 		MenuItem splashItem = menu.findItem( R.id.action_splash );
 		splashItem.setChecked( preferenceHelper.getBoolean( PreferenceHelper.SPLASH_IS_INVISIBLE ) );
 		return true;
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MyApplication.activityPaused();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MyApplication.activityResumed();
 	}
 
 	@Override
